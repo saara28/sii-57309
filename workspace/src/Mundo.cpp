@@ -154,10 +154,10 @@ void CMundo::OnKeyboardDown(unsigned char key, int x, int y)
 	{
 //	case 'a':jugador1.velocidad.x=-1;break;
 //	case 'd':jugador1.velocidad.x=1;break;
-	case 's':jugador1.velocidad.y=-4;break;
-	case 'w':jugador1.velocidad.y=4;break;
-	case 'l':jugador2.velocidad.y=-4;break;
-	case 'o':jugador2.velocidad.y=4;break;
+	case 's':jugador1.velocidad.y=-1;break;
+	case 'w':jugador1.velocidad.y=1;break;
+	case 'l':jugador2.velocidad.y=-1;break;
+	case 'o':jugador2.velocidad.y=1;break;
 
 	}
 }
