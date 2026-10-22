@@ -17,6 +17,8 @@
 
 class CMundo  
 {
+	int fd_fifo;
+
 public:
 	void Init();
 	CMundo();

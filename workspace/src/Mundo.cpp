@@ -4,12 +4,15 @@
 #include <fstream>
 #include "Mundo.h"
 #include "glut.h"
-
+#include <string>     // Necesario para std::string y to_string
+#include <fcntl.h>    // Necesario para open, O_WRONLY
+#include <unistd.h>   // Necesario para write, close
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 
+using namespace std;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -21,7 +24,7 @@ CMundo::CMundo()
 
 CMundo::~CMundo()
 {
-
+	close(fd_fifo);
 }
 
 void CMundo::InitGL()
@@ -115,6 +118,7 @@ void CMundo::OnDraw()
 
 void CMundo::OnTimer(int value)
 {	
+	
 	jugador1.Mueve(0.025f);
 	jugador2.Mueve(0.025f);
 	esfera.Mueve(0.025f);
@@ -135,6 +139,9 @@ void CMundo::OnTimer(int value)
 		esfera.velocidad.x=2+2*rand()/(float)RAND_MAX;
 		esfera.velocidad.y=2+2*rand()/(float)RAND_MAX;
 		puntos2++;
+		
+		string mensaje = "Jugador 2 marca 1 punto, lleva un total de " + 		to_string(puntos2) + "puntos.\n";
+	write(fd_fifo, mensaje.c_str(), mensaje.length());
 	}
 
 	if(fondo_dcho.Rebota(esfera))
@@ -144,6 +151,9 @@ void CMundo::OnTimer(int value)
 		esfera.velocidad.x=-2-2*rand()/(float)RAND_MAX;
 		esfera.velocidad.y=-2-2*rand()/(float)RAND_MAX;
 		puntos1++;
+		
+		string mensaje = "Jugador 1 marca 1 punto, lleva un total de " + 		to_string(puntos1) + "puntos.\n";
+		
 	}
 
 }
@@ -164,6 +174,8 @@ void CMundo::OnKeyboardDown(unsigned char key, int x, int y)
 
 void CMundo::Init()
 {
+	fd_fifo = open("/tmp/fifo_tenis", O_WRONLY);
+
 	Plano p;
 //pared inferior
 	p.x1=-7;p.y1=-5;
